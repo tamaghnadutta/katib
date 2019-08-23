@@ -14,7 +14,7 @@ from logging import getLogger, StreamHandler, INFO
 # the "accuracy" metric is saved under "train" and "test" directories. So in Katib, please specify name of metrics as "train/accuracy" and "test/accuracy".
 class TFEventFileParser:
     def find_all_files(self, directory):
-        for root, dirs, files in os.walk(directory):
+        for root, dirs, files in tf.gfile.Walk(directory):
             yield root
             for f in files:
                 yield os.path.join(root, f)
@@ -53,7 +53,7 @@ class MetricsCollector:
     def parse_file(self, directory):
         mls = []
         for f in self.parser.find_all_files(directory):
-            if os.path.isdir(f):
+            if tf.gfile.IsDirectory(f):
                 continue
             try:
                 self.logger.info(f + " will be parsed.")
