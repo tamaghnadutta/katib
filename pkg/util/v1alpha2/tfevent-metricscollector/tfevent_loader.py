@@ -57,9 +57,14 @@ class MetricsCollector:
                 continue
             try:
                 self.logger.info(f + " will be parsed.")
-                mls = self.parser.parse_summary(f, self.metrics)
+                mls.extend(self.parser.parse_summary(f, self.metrics))
             except Exception, e:
                 self.logger.warning("Unexpected error: "+ str(e))
                 continue
         return api_pb2.ObservationLog(metric_logs=mls)
  
+
+if __name__ == "__main__":
+    mc = MetricsCollector("accuracy")
+    mc.parse_file("/Users/tamaghnadutta/Desktop/all_questions/model_output")
+    
